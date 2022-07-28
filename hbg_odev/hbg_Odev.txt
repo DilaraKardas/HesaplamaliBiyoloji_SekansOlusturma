@@ -1,0 +1,135 @@
+package odev;
+import java.util.*;
+public class Odev {
+
+    public static void main(String[] args) {
+       
+        System.out.println("DNA uzunluğunu giriniz:"); 
+        
+        Scanner x = new Scanner(System.in);     //kullanıcıdan dna uzunluğu istendi
+                int bp = x.nextInt();
+
+        String[] karakterler = new String[]{"A","T","G","C"};   //ATGC yi içeren karakterler adlı dizi oluşturuldu ve random metoduyla 
+        String[] dna_dizilimi = new String[bp];   //oluşturulan stringler dna_dizilimi adlı diziye aktarıldı.
+        Random rand = new Random();                         
+        
+         for(int i = 0 ; i < bp ; i++){  //bp=kullanıcının girdiği değer. kullanıcıdan alınan değere ulaşılana kadar rastgele string üretilsin
+         dna_dizilimi[i] = karakterler[rand.nextInt(4)];  //rastgele üretilecek string karakterlerden seçilsin ve dna_dizilimi ne aktarılsın
+         System.out.print(dna_dizilimi[i]); //diziyi (yani dna yı) yazdır.  
+         }
+        System.out.println("");
+   
+        System.out.println("SEKANSLAR");
+		System.out.println("");
+		//Kullanicidan dna dizilimi icin sekans uzunluğunu ve adedi alindi.
+		Scanner s_adet = new Scanner(System.in);
+		System.out.println("Sekans Adedi : ");
+		int N = s_adet.nextInt();
+		
+		Scanner s_uzunluk = new Scanner(System.in);
+		System.out.println("Sekans Uzunluğu : ");
+		int length = s_uzunluk.nextInt();
+                
+                String[][] sekansDizi = new String[N][length]; //N= sekans adedi , length= sekans uzunluğu
+                String[][] compDizi = new String[N][length];
+        
+            //38-47 satırlarında 
+      
+            Random randomNum = new Random();
+	            for (int i=0; i < N ;i++ ) {
+	            	int int_sayi = randomNum.nextInt(bp-bp%length); //bp=90 olsun ve length=8 olsun 90%8=2 ---> tam gruplama olsun diye
+	            	for (int j=0; j < length ;j++ ) {
+	            		
+	            		sekansDizi[i][j] = dna_dizilimi[int_sayi]  ;
+	            		int_sayi++;  
+	            		//System.out.println(int_sayi); //burayı kontrol amaçlı yazdım. rastgele sayı üretiyor mu diye
+		            }
+	            }
+  
+                
+            for (int i=0; i < N ;i++) {
+                int int_sayi = randomNum.nextInt(bp-length);
+                for (int j=0; j < length ;j++ ) {
+	            		
+                    sekansDizi[i][j] = dna_dizilimi[int_sayi]  ;
+                    int_sayi++;
+	        //System.out.println(int_sayi);
+            }
+	}
+		
+        //Sekanslari ve complementleri tutacak dizileri olusturuldu.
+        
+        
+        
+        //burada sekansları, tıpkı yukarda dna yı oluşturduğumuz gibi oluşturuyoruz
+        for(int i = 0 ; i < N ; i++){  //N adet string (sekans) oluştur.
+            for(int k=0;k<length;k++){ //bu stringler lenght uzunluğunda olsun
+                sekansDizi[i][k] = karakterler[rand.nextInt(4)];
+            }
+        }
+        
+        //Sekansları oluşturduğumuz gibi şimdi de sekansların complemetlerini oluşturuyoruz.
+        for(int i=0; i<N; i++) {
+        	for(int j=1; j<=length ; j++) { //alt satırda sekansDizi nin her bir indisini compDiziye ters çevirerek atıyoruz.
+        		compDizi[i][j-1]=sekansDizi[i][length -j ]; //compDizi[i][j] yaptığımızda IndexOutOfBoundsException hatası alıyoruz. O yüzden j yi yukarda 1 den başlatıp alt döngüde de j-1 yaptık
+            }
+        }
+       
+       //Burada kosullarla sekanslarin yerine complementlerini yazdık.
+        for (int i=0;i<N;i++) {
+        	for (int j=0;j<length;j++) {
+            	
+        		if (compDizi[i][j]== "A") {
+        			compDizi[i][j] = "T";
+        		}
+        		else if (compDizi[i][j]== "T") {
+        			compDizi[i][j] = "A";
+        		}
+        		else if (compDizi[i][j]== "G") {
+        			compDizi[i][j] = "C";
+        		}
+        		else {
+        			compDizi[i][j] = "G";
+        		}            	
+            }        	
+        }
+        
+        //Dongu kullanilarak sekans dizisi bastirildi.
+        System.out.println("");
+        System.out.println("SEKANSLAR (READ)"); 
+        
+        
+        for(int i = 0 ; i < N ; i++){
+            for(int j=0;j<length;j++){
+            System.out.print(sekansDizi[i][j]);
+            }
+           System.out.println(" ");
+    }
+        //Dongu kullanilarak complement dizisi bastirildi
+        System.out.println("");
+        System.out.println("COMPLEMENTLER (*READ)");
+        ;
+        
+        for(int i = 0 ; i < N ; i++){
+            for(int j=0;j<length;j++){
+            System.out.print(compDizi[i][j]);
+            }
+           System.out.println(" ");
+    }
+      //burada sekansları karşılaştır    
+  /*for(int i = 0 ; i < N ; i++){
+    for(int j = i+1 ; j < N ; j++){
+        for(int k=0; k<N-3; k++){
+            boolean equal = true;
+            for(int l=0; l<3; l++){
+                if(sekansDizi[i][k+l] != sekansDizi[j][k+l]) equal = false;
+            }
+            System.out.println(i + " " + j + " " +k+" " + equal);
+        }
+    }
+}*/
+    
+	}
+}
+  
+    
